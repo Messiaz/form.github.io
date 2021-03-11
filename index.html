@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de formulário</title>
+    <style>
+        .container {
+            float: left;
+            padding: 25px;
+            margin: 8px;
+        }
+    </style>
+</head>
+
+<body style="background-color: rgba(116, 87, 161, 0.247);">
+    <div id="formulario" style="left: auto;">
+
+        <form class="container" id="text" style="margin: 5px; float: left;" onsubmit="return verifica()">
+            <div class="container" name="info" style="margin: 8px;">
+                <p style="font-family: verdana;"><b>Informações Pessoais:</b></p>
+
+
+                <u><i><label for="nome">Nome e Sobrenome:</label></i></u><br>
+                <input class="inputSimple" name="nome" value=""><br><br>
+
+                <u><i><label for="idade">Idade:</label></i></u><br>
+                <input class="inputSimple" value="" name="idade" type="number" min="0" max="99" style="width: 170px;"><br><br>
+
+                <u><i><label for="id">Passaporte:</label></i></u><br>
+                <input class="inputSimple" type="number" min="0" max="999999" value=""><br><br>
+
+                <u><i><label for="telefone">Telefone:</label></i></u><br>
+                <input class="inputSimple" value="" type="tel" id="phone" name="telefone" pattern="[0-9]{3}-[0-9]{3}" placeholder="123-456" required><br><br>
+            </div>
+            <div class="container" name="servico" style="float: left; width: 200px;">
+                <p><b>Serviços:</b></p>
+
+                <input class="selecao" id="checkbox" type="radio" name="servico" value="Compra de cosméticos" /><b><i>Compra de cosméticos</i></b><br><br>
+                <input class="selecao" id="checkbox" type="radio" name="servico" value="Serviço de massagem" /><b><i>Massagem</i></b><br><br>
+                <input class="selecao" id="checkbox" type="radio" name="servico" value="" /><b><i>Outro:</i></b> <input class="inputSimple" type="text" name="outrotext" id="outrotext"><br><br>
+                <u><i><label for="data">Data e Horário:</label></i></u><br>
+                <input class="selecao" type="datetime-local" name="data" min="2021-01-01" max="2022-12-31" placeholder="Data" value="" /><br><br>
+
+
+
+            </div>
+            <input type="reset" form="text" value="Redefinir">
+            <button class="css_btn_class" onclick="sendMessage()">Enviar</button>
+        </form>
+
+    </div>
+
+
+
+
+
+
+
+</body>
+
+<script>
+    function sendMessage() {
+        var request = new XMLHttpRequest();
+        request.open("POST", "https://discord.com/api/webhooks/815314131330138153/o1DmpIVVqPMnCusMuipR2JzMnUNloLBCpxqIYPVZ3vpih3H42ij5LpXrGhE5nnhJ8yka");
+
+        request.setRequestHeader('Content-type', 'application/json');
+        var form = document.getElementById("text")
+        var input = form.querySelectorAll(".inputSimple"); // Seleciona todos os inputs com a tag de inputSimple em uma lista
+        var box = form.querySelectorAll(".selecao") // Seleciona todos os checkbox
+
+        var erro = ["𝗡𝗼𝗺𝗲 𝗲 𝗦𝗼𝗯𝗿𝗲𝗻𝗼𝗺𝗲", "𝗜𝗱𝗮𝗱𝗲", "𝗣𝗮𝘀𝘀𝗮𝗽𝗼𝗿𝘁𝗲", "𝗧𝗲𝗹𝗲𝗳𝗼𝗻𝗲"] // mensagem de erro
+
+        for (var i = 0; i < input.length - 1; i++) {
+            if (input[i].value == "") {
+                return alert("Preencha o campo de " + erro[i] + "!")
+
+            }
+        }
+        if (input[1].value > 99 || input[1].value < 0) {
+            return alert("Idade Inválida")
+
+        } else if (box[2].checked == true && input[4].value == "") {
+            return alert("Preencha o campo de 𝗢𝘂𝘁𝗿𝗼𝘀")
+
+        } else if (box[3].value == "") {
+            return alert("Data inválida")
+
+        } else if (input[2].value < 0 || input[2].value > 9999) {
+            return alert("Informe um passaporte válido! ")
+        }
+
+        if (box[0].checked == false && box[1].checked == false && box[2].checked == false) {
+            return alert("Selecione um serviço!")
+        }
+
+        var datetime = box[3].value
+        var ano = datetime.slice(0, 4)
+        var mes = datetime.slice(5, 7)
+        var dia = datetime.slice(8, 10)
+
+        var hora = datetime.slice(11, 13)
+        var min = datetime.slice(14, 16)
+
+        // Horário
+        var date_time = "Dia: " + dia + "/" + mes + "/" + ano + "\nHorário: " + hora + ":" + min
+
+        // Condicionamento para atributos do checkmark
+        if (box[0].checked == true) { // cosmetico
+            servicos = String(box[0].value)
+
+
+        } else if (box[1].checked == true) { // servico
+            servicos = String(box[1].value)
+
+        } else if (box[2].checked == true) { // outro
+            servicos = String(input[4].value)
+
+        }
+
+        var nome = input[0].value;
+        var idade = input[1].value;
+        var id = input[2].value;
+        var tel = input[3].value;
+        // var dia = box[3].value;
+
+        // var dia = x[5].value;
+        // var tipo = x[6].value;
+
+        // if (str1 === "") {
+        //     str1 = "sem nome"
+        // } else if (str3 !== Number) {
+        //     str3 = null
+        // }
+
+
+        var txt = '```prolog\nNome: ' + nome + '\n' + date_time + '\nIdade: ' + idade + '\nPassaporte: ' + id + '\nTelefone: ' + tel + '\nTipo de serviço: ' + servicos + '```'
+        var params = {
+            username: "Agendamento",
+            avatar_url: "",
+            // avatar_url: "https://cdnb.artstation.com/p/assets/images/images/014/861/241/large/jose-miranda-srgb-aang-final-con-brillo-jmt.jpg?1545955204",
+            // content: x.querySelector("input").value
+            //content: (str1 + "\n" + str2 + "\n" + str3)
+            content: txt
+                //content: document.querySelector("").value,                                                                                                                              
+
+        }
+
+        request.send(JSON.stringify(params));
+        // console.log(nome, hora, idade)
+    }
+
+    // function verifica() {
+    //     var data_dd = document.querySelector("input[name='Data_dd']").value;
+    //     if (data_dd.length != 10) {
+    //         alert("Data inválida");
+    //         return false;
+    //     }
+    // }
+
+    // function formatar(mascara, documento) {
+    //     var i = documento.value.length;
+    //     var saida = mascara.substring(0, 1);
+    //     var texto = mascara.substring(i);
+    //     if (event.keyCode < 48 || event.keyCode > 57) {
+    //         event.returnValue = false;
+    //     }
+
+    //     if (texto.substring(0, 1) != saida) {
+    //         documento.value += texto.substring(0, 1);
+    //     }
+
+    // }
+</script>
+
+</html>
